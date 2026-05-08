@@ -1,9 +1,31 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import gdown
+import os
 
+# الـ ID الخاص بملف الموديل على جوجل درايف
+file_id = '1gNHV2vHfMODQjG5rxtVJT3b-dR5W5HSa'
+download_url = f'https://drive.google.com/uc?id={file_id}'
 
-model = joblib.load("model/diet_model.pkl")
+# المسار واسم الملف اللي هيتحفظ بيه بعد التحميل
+output_path = 'model/diet_model.pkl'
+
+# التأكد من وجود مجلد 'model'، وإذا لم يكن موجوداً يتم إنشاؤه
+os.makedirs('model', exist_ok=True)
+
+# لو الملف مش موجود بالفعل، هيتم تحميله من جوجل درايف
+if not os.path.exists(output_path):
+    print("Downloading model from Google Drive...")
+    gdown.download(download_url, output_path, quiet=False)
+
+# تحميل الموديل باستخدام joblib
+try:
+    model = joblib.load(output_path)
+    print("Model loaded successfully!")
+except Exception as e:
+    print(f"Error loading the model: {e}")
+
 columns = joblib.load("model/columns.pkl")
 
 # =========================
