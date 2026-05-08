@@ -26,7 +26,7 @@ try:
 except Exception as e:
     print(f"Error loading the model: {e}")
 
-columns = joblib.load("model/columns.pkl")
+columns = joblib.load("columns.pkl")
 
 # =========================
 # Page Config
